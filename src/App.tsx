@@ -14,7 +14,7 @@ import { ReferralModal } from './components/ReferralModal';
 import { CheckCircle2, Sparkles } from 'lucide-react';
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<TabType>('profile'); // Can default to profile or home
+  const [currentTab, setCurrentTab] = useState<TabType>('home');
   const [user, setUser] = useState<UserProfile>(initialUserProfile);
   const [studios] = useState<Studio[]>(mockStudios);
   const [bookings, setBookings] = useState<Booking[]>(initialBookings);

@@ -42,6 +42,23 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   return (
     <div className="space-y-8 pb-20 pt-2 sm:pt-4">
+      {/* WELCOME HERO & APP DESCRIPTION */}
+      <section className="bg-gradient-to-br from-[#002d53] via-[#0042c8] to-[#1d4ed8] rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
+        <div className="relative z-10 space-y-2 max-w-xl">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-semibold backdrop-blur-md border border-white/20">
+            <Sparkles className="w-3.5 h-3.5 text-[#fde68a]" />
+            <span>Welcome to Happy Parents</span>
+          </div>
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight">
+            One App for All Your Child&apos;s Enrichment
+          </h1>
+          <p className="text-sm text-blue-100/95 leading-relaxed font-normal">
+            Happy parents is an app for parents to select enrichment activities of their kids. Use one app to book everything from coding classes to dance classes with no commitment of class packages.
+          </p>
+        </div>
+        <div className="absolute -right-8 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+      </section>
+
       {/* REFER FRIENDS PROMO BANNER */}
       <section className="space-y-2">
         <div className="flex justify-between items-center">
