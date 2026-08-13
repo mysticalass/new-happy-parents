@@ -30,6 +30,17 @@ export default function App() {
 
   // Toast notification
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+
+  const handleToggleFavorite = (studioId: string) => {
+    setFavorites((prev) => {
+      const isFav = !prev[studioId];
+      if (isFav) {
+        showToast('❤️ Saved to your favorite studios!');
+      }
+      return { ...prev, [studioId]: isFav };
+    });
+  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -99,6 +110,8 @@ export default function App() {
         {currentTab === 'home' && (
           <HomeView
             recommendedStudios={studios}
+            favorites={favorites}
+            onToggleFavorite={handleToggleFavorite}
             onSelectStudio={(studio) => setSelectedStudio(studio)}
             onBookClass={(cls) => setSelectedClassForBooking(cls)}
             onOpenReferral={() => setIsReferralOpen(true)}

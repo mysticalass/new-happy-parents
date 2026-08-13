@@ -5,6 +5,8 @@ import { DisqusForum } from './DisqusForum';
 
 interface HomeViewProps {
   recommendedStudios: Studio[];
+  favorites: Record<string, boolean>;
+  onToggleFavorite: (studioId: string) => void;
   onSelectStudio: (studio: Studio) => void;
   onBookClass: (session: ClassSession) => void;
   onOpenReferral: () => void;
@@ -13,6 +15,8 @@ interface HomeViewProps {
 
 export const HomeView: React.FC<HomeViewProps> = ({
   recommendedStudios,
+  favorites,
+  onToggleFavorite,
   onSelectStudio,
   onBookClass,
   onOpenReferral,
@@ -134,10 +138,22 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
+                    onToggleFavorite(studio.id);
                   }}
-                  className="absolute top-2.5 right-2.5 p-1.5 bg-white/80 backdrop-blur-xs rounded-full text-[#434656] hover:text-red-500 transition-colors"
+                  className={`absolute top-2.5 right-2.5 p-1.5 rounded-full transition-all active:scale-90 ${
+                    favorites[studio.id]
+                      ? 'bg-white text-red-500 shadow-md ring-2 ring-red-500/20'
+                      : 'bg-white/80 backdrop-blur-xs text-[#434656] hover:text-red-500'
+                  }`}
+                  aria-label={favorites[studio.id] ? 'Remove from favorites' : 'Add to favorites'}
                 >
-                  <Heart className="w-4 h-4" />
+                  <Heart
+                    className={`w-4 h-4 transition-all duration-200 ${
+                      favorites[studio.id]
+                        ? 'fill-red-500 text-red-500 opacity-100 scale-110'
+                        : 'opacity-80'
+                    }`}
+                  />
                 </button>
                 <span className="absolute bottom-2.5 left-2.5 bg-[#191c1e]/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                   Ages 4-18
