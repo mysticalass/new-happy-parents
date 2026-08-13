@@ -11,12 +11,14 @@ import { ProfileView } from './components/ProfileView';
 import { StudioModal } from './components/StudioModal';
 import { BookingModal } from './components/BookingModal';
 import { ReferralModal } from './components/ReferralModal';
+import { ReviewsModal } from './components/ReviewsModal';
+import { Review } from './types';
 import { CheckCircle2, Sparkles } from 'lucide-react';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<TabType>('home');
   const [user, setUser] = useState<UserProfile>(initialUserProfile);
-  const [studios] = useState<Studio[]>(mockStudios);
+  const [studios, setStudios] = useState<Studio[]>(mockStudios);
   const [bookings, setBookings] = useState<Booking[]>(initialBookings);
 
   // Search & Filter state
@@ -25,6 +27,7 @@ export default function App() {
 
   // Modal states
   const [selectedStudio, setSelectedStudio] = useState<Studio | null>(null);
+  const [selectedReviewsStudio, setSelectedReviewsStudio] = useState<Studio | null>(null);
   const [selectedClassForBooking, setSelectedClassForBooking] = useState<ClassSession | null>(null);
   const [isReferralOpen, setIsReferralOpen] = useState(false);
 
@@ -40,6 +43,43 @@ export default function App() {
       }
       return { ...prev, [studioId]: isFav };
     });
+  };
+
+  const handleAddReview = (studioId: string, newReviewData: Omit<Review, 'id' | 'studioId' | 'date'>) => {
+    const newReview: Review = {
+      id: `rev_${Date.now()}`,
+      studioId,
+      ...newReviewData,
+      date: 'Just now',
+    };
+
+    setStudios((prevStudios) =>
+      prevStudios.map((studio) => {
+        if (studio.id !== studioId) return studio;
+        const currentReviews = studio.reviews || [];
+        const updatedReviews = [newReview, ...currentReviews];
+        const newReviewCount = (studio.reviewCount || 0) + 1;
+
+        // Calculate weighted average rating score
+        const sumRatings = updatedReviews.reduce((acc, r) => acc + r.rating, 0);
+        const avg = (sumRatings / updatedReviews.length).toFixed(1);
+
+        const updatedStudio: Studio = {
+          ...studio,
+          reviews: updatedReviews,
+          reviewCount: newReviewCount,
+          rating: parseFloat(avg),
+        };
+
+        if (selectedReviewsStudio?.id === studioId) {
+          setSelectedReviewsStudio(updatedStudio);
+        }
+
+        return updatedStudio;
+      })
+    );
+
+    showToast('🌟 Thank you! Your parent review has been published.');
   };
 
   const showToast = (msg: string) => {
@@ -116,6 +156,7 @@ export default function App() {
             onBookClass={(cls) => setSelectedClassForBooking(cls)}
             onOpenReferral={() => setIsReferralOpen(true)}
             onNavigateSearch={() => setCurrentTab('search')}
+            onOpenReviews={(studio) => setSelectedReviewsStudio(studio)}
           />
         )}
 
@@ -128,6 +169,7 @@ export default function App() {
             onSelectCategory={setSelectedCategory}
             onSelectStudio={(studio) => setSelectedStudio(studio)}
             onBookClass={(cls) => setSelectedClassForBooking(cls)}
+            onOpenReviews={(studio) => setSelectedReviewsStudio(studio)}
           />
         )}
 
@@ -168,6 +210,14 @@ export default function App() {
           setSelectedStudio(null);
           setSelectedClassForBooking(session);
         }}
+        onOpenReviews={(studio) => setSelectedReviewsStudio(studio)}
+      />
+
+      <ReviewsModal
+        studio={selectedReviewsStudio}
+        onClose={() => setSelectedReviewsStudio(null)}
+        onAddReview={handleAddReview}
+        currentUserName={user.name}
       />
 
       <BookingModal

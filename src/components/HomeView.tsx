@@ -11,6 +11,7 @@ interface HomeViewProps {
   onBookClass: (session: ClassSession) => void;
   onOpenReferral: () => void;
   onNavigateSearch: () => void;
+  onOpenReviews: (studio: Studio) => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -21,6 +22,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onBookClass,
   onOpenReferral,
   onNavigateSearch,
+  onOpenReviews,
 }) => {
   // Featured recurring class session for "Consistency is key" - CodeKids Robotics
   const roboticsStudio = recommendedStudios.find((s) => s.id === 'studio_robotics') || recommendedStudios[0];
@@ -165,12 +167,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   {studio.name}
                 </h3>
                 <p className="text-xs text-[#434656]">{studio.distance} • {studio.category}</p>
-                <div className="flex items-center gap-1.5 mt-1">
-                  <span className="text-xs font-bold text-[#191c1e]">{studio.rating}</span>
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenReviews(studio);
+                  }}
+                  className="inline-flex items-center gap-1.5 mt-1 cursor-pointer hover:bg-[#0042c8]/10 p-1 -ml-1 rounded-md transition-all active:scale-95 group/rating"
+                  title="Click to view & submit parent reviews"
+                >
+                  <span className="text-xs font-bold text-[#191c1e] group-hover/rating:text-[#0042c8]">{studio.rating}</span>
                   <Star className="w-3.5 h-3.5 fill-[#0056FF] text-[#0056FF]" />
-                  <span className="text-xs text-[#434656]">({studio.reviewCount.toLocaleString()}+)</span>
+                  <span className="text-xs text-[#434656] group-hover/rating:underline">
+                    ({(studio.reviews ? studio.reviews.length : studio.reviewCount).toLocaleString()} reviews)
+                  </span>
                   {studio.badge && (
-                    <span className="bg-[#E8F1FF] text-[#0056FF] text-[10px] font-bold px-2 py-0.5 rounded-full ml-1">
+                    <span className="bg-[#E8F1FF] text-[#0056FF] text-[10px] font-bold px-2 py-0.5 rounded-full ml-1 shrink-0">
                       {studio.badge}
                     </span>
                   )}

@@ -27,6 +27,16 @@ export interface ClassSession {
   ageRange?: string;
 }
 
+export interface Review {
+  id: string;
+  studioId: string;
+  author: string;
+  rating: number;
+  date: string;
+  comment: string;
+  verifiedParent?: boolean;
+}
+
 export interface Studio {
   id: string;
   name: string;
@@ -49,6 +59,7 @@ export interface Studio {
     instructor: string;
   };
   upcomingClasses: ClassSession[];
+  reviews?: Review[];
 }
 
 export interface Booking {

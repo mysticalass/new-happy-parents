@@ -6,9 +6,10 @@ interface StudioModalProps {
   studio: Studio | null;
   onClose: () => void;
   onBookClass: (session: ClassSession) => void;
+  onOpenReviews: (studio: Studio) => void;
 }
 
-export const StudioModal: React.FC<StudioModalProps> = ({ studio, onClose, onBookClass }) => {
+export const StudioModal: React.FC<StudioModalProps> = ({ studio, onClose, onBookClass, onOpenReviews }) => {
   if (!studio) return null;
 
   return (
@@ -24,11 +25,20 @@ export const StudioModal: React.FC<StudioModalProps> = ({ studio, onClose, onBoo
           >
             <X className="w-5 h-5" />
           </button>
-          <div className="absolute bottom-4 left-4 bg-[#E8F1FF] px-3 py-1 rounded-full border border-[#0042c8]/20 flex items-center gap-1.5 shadow-xs">
+          <button
+            onClick={() => {
+              onClose();
+              onOpenReviews(studio);
+            }}
+            className="absolute bottom-4 left-4 bg-[#E8F1FF] hover:bg-white px-3 py-1.5 rounded-full border border-[#0042c8]/20 flex items-center gap-1.5 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            title="Click to view & write parent reviews"
+          >
             <Star className="w-4 h-4 fill-[#0056FF] text-[#0056FF]" />
             <span className="text-xs font-bold text-[#0056FF]">{studio.rating}</span>
-            <span className="text-xs text-[#0056FF]/80">({studio.reviewCount.toLocaleString()} reviews)</span>
-          </div>
+            <span className="text-xs text-[#0056FF] font-semibold underline">
+              ({(studio.reviews ? studio.reviews.length : studio.reviewCount).toLocaleString()} parent reviews)
+            </span>
+          </button>
         </div>
 
         {/* Modal Body */}

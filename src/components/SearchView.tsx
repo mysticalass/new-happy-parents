@@ -10,6 +10,7 @@ interface SearchViewProps {
   onSelectCategory: (cat: CategoryType) => void;
   onSelectStudio: (studio: Studio) => void;
   onBookClass: (session: ClassSession) => void;
+  onOpenReviews: (studio: Studio) => void;
 }
 
 export const SearchView: React.FC<SearchViewProps> = ({
@@ -20,6 +21,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
   onSelectCategory,
   onSelectStudio,
   onBookClass,
+  onOpenReviews,
 }) => {
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
   const [location, setLocation] = useState('Orchard');
@@ -200,15 +202,25 @@ export const SearchView: React.FC<SearchViewProps> = ({
                 </button>
 
                 {/* Rating Badge */}
-                <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-[#E8F1FF] px-2.5 py-1 rounded-full border border-[#0042c8]/10 backdrop-blur-md shadow-xs">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenReviews(studio);
+                  }}
+                  className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-[#E8F1FF] hover:bg-white px-2.5 py-1 rounded-full border border-[#0042c8]/20 backdrop-blur-md shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer z-10"
+                  title="Click to view & write parent reviews"
+                >
                   <Star className="w-3.5 h-3.5 fill-[#0056FF] text-[#0056FF]" />
                   <span className="text-xs font-bold text-[#0056FF]">{studio.rating}</span>
+                  <span className="text-xs text-[#0056FF]/80 underline">
+                    ({(studio.reviews ? studio.reviews.length : studio.reviewCount).toLocaleString()})
+                  </span>
                   {studio.badge && (
                     <span className="text-xs font-semibold text-[#0056FF]/80 ml-0.5">
-                      {studio.badge}
+                      • {studio.badge}
                     </span>
                   )}
-                </div>
+                </button>
               </div>
 
               {/* Card Body */}

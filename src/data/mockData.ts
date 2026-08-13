@@ -1,5 +1,6 @@
 import { Studio, UserProfile, CreditPackage, Booking } from '../types';
 import apexJuniorAthleticsImg from '../assets/images/apex_junior_athletics_1786611667956.jpg';
+import { defaultStudioReviews } from '../components/ReviewsModal';
 
 export const initialUserProfile: UserProfile = {
   name: 'Alex Johnson',
@@ -113,6 +114,7 @@ export const mockStudios: Studio[] = [
         ageRange: 'Ages 5-8',
       },
     ],
+    reviews: defaultStudioReviews('studio_robotics'),
   },
   {
     id: 'studio_drama',
@@ -167,6 +169,7 @@ export const mockStudios: Studio[] = [
         ageRange: 'Ages 6-12',
       },
     ],
+    reviews: defaultStudioReviews('studio_drama'),
   },
   {
     id: 'studio_pottery',
@@ -221,6 +224,7 @@ export const mockStudios: Studio[] = [
         ageRange: 'Ages 5-12',
       },
     ],
+    reviews: defaultStudioReviews('studio_pottery'),
   },
   {
     id: 'studio_writing',
@@ -275,6 +279,7 @@ export const mockStudios: Studio[] = [
         ageRange: 'Ages 12-18',
       },
     ],
+    reviews: defaultStudioReviews('studio_writing'),
   },
   {
     id: 'studio_dance',
@@ -329,6 +334,7 @@ export const mockStudios: Studio[] = [
         ageRange: 'Ages 7-15',
       },
     ],
+    reviews: defaultStudioReviews('studio_dance'),
   },
   {
     id: 'studio_sports',
@@ -383,6 +389,7 @@ export const mockStudios: Studio[] = [
         ageRange: 'Ages 9-16',
       },
     ],
+    reviews: defaultStudioReviews('studio_sports'),
   },
 ];
 
